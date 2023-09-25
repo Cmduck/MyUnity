@@ -3896,6 +3896,10 @@ public static class ToLuaExport
                 {
                     s2 = "out " + s2;
                 }
+                else if (infos[i].Attributes == ParameterAttributes.In)
+                {
+                    s2 = "in " + s2;
+                }
                 else
                 {
                     s2 = "ref " + s2;
