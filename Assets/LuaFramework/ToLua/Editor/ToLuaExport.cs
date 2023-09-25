@@ -161,7 +161,16 @@ public static class ToLuaExport
         "UIDrawCall.isActive",
         "Dictionary.TryAdd",
         "KeyValuePair.Deconstruct",
-        "ParticleSystem.SetJob"
+        "ParticleSystem.SetJob",
+
+
+        // mono不支持Span<T>
+        "Transform.TransformDirections",
+        "Transform.InverseTransformDirections",
+        "Transform.TransformVectors",
+        "Transform.InverseTransformVectors",
+        "Transform.TransformPoints",
+        "Transform.InverseTransformPoints",
     };
 
     class _MethodBase
@@ -479,6 +488,10 @@ public static class ToLuaExport
                     if (param.Attributes == ParameterAttributes.Out)
                     {
                         sbArgs.Append("out arg");
+                    }
+                    else if (param.Attributes == ParameterAttributes.In)
+                    {
+                        sbArgs.Append("in arg");
                     }
                     else
                     {
