@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace LuaFramework {
     public class SoundManager : Manager {
-        private AudioSource audio;
+        private AudioSource _audio;
         private Hashtable sounds = new Hashtable();
 
         void Start() {
-            audio = GetComponent<AudioSource>();
+            _audio = GetComponent<AudioSource>();
         }
 
         /// <summary>
-        /// Ìí¼ÓÒ»¸öÉùÒô
+        /// æ·»åŠ ä¸€ä¸ªå£°éŸ³
         /// </summary>
         void Add(string key, AudioClip value) {
             if (sounds[key] != null || value == null) return;
@@ -20,7 +20,7 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öÉùÒô
+        /// è·å–ä¸€ä¸ªå£°éŸ³
         /// </summary>
         AudioClip Get(string key) {
             if (sounds[key] == null) return null;
@@ -28,7 +28,7 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// ÔØÈëÒ»¸öÒôÆµ
+        /// è½½å…¥ä¸€ä¸ªéŸ³é¢‘
         /// </summary>
         public AudioClip LoadAudioClip(string path) {
             AudioClip ac = Get(path);
@@ -40,7 +40,7 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// ÊÇ·ñ²¥·Å±³¾°ÒôÀÖ£¬Ä¬ÈÏÊÇ1£º²¥·Å
+        /// æ˜¯å¦æ’­æ”¾èƒŒæ™¯éŸ³ä¹ï¼Œé»˜è®¤æ˜¯1ï¼šæ’­æ”¾
         /// </summary>
         /// <returns></returns>
         public bool CanPlayBackSound() {
@@ -50,33 +50,33 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// ²¥·Å±³¾°ÒôÀÖ
+        /// æ’­æ”¾èƒŒæ™¯éŸ³ä¹
         /// </summary>
         /// <param name="canPlay"></param>
         public void PlayBacksound(string name, bool canPlay) {
-            if (audio.clip != null) {
-                if (name.IndexOf(audio.clip.name) > -1) {
+            if (_audio.clip != null) {
+                if (name.IndexOf(_audio.clip.name) > -1) {
                     if (!canPlay) {
-                        audio.Stop();
-                        audio.clip = null;
+                        _audio.Stop();
+                        _audio.clip = null;
                         Util.ClearMemory();
                     }
                     return;
                 }
             }
             if (canPlay) {
-                audio.loop = true;
-                audio.clip = LoadAudioClip(name);
-                audio.Play();
+                _audio.loop = true;
+                _audio.clip = LoadAudioClip(name);
+                _audio.Play();
             } else {
-                audio.Stop();
-                audio.clip = null;
+                _audio.Stop();
+                _audio.clip = null;
                 Util.ClearMemory();
             }
         }
 
         /// <summary>
-        /// ÊÇ·ñ²¥·ÅÒôĞ§,Ä¬ÈÏÊÇ1£º²¥·Å
+        /// æ˜¯å¦æ’­æ”¾éŸ³æ•ˆ,é»˜è®¤æ˜¯1ï¼šæ’­æ”¾
         /// </summary>
         /// <returns></returns>
         public bool CanPlaySoundEffect() {
@@ -86,7 +86,7 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// ²¥·ÅÒôÆµ¼ô¼­
+        /// æ’­æ”¾éŸ³é¢‘å‰ªè¾‘
         /// </summary>
         /// <param name="clip"></param>
         /// <param name="position"></param>

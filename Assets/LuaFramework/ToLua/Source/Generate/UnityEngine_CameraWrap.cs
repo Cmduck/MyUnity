@@ -660,7 +660,7 @@ public class UnityEngine_CameraWrap
 				UnityEngine.Vector2 arg3 = ToLua.ToVector2(L, 4);
 				float arg4 = (float)LuaDLL.luaL_checknumber(L, 5);
 				float arg5 = (float)LuaDLL.luaL_checknumber(L, 6);
-				UnityEngine.Camera.CalculateProjectionMatrixFromPhysicalProperties(out argref arg0, arg1, arg2, arg3, arg4, arg5);
+				UnityEngine.Camera.CalculateProjectionMatrixFromPhysicalProperties(out arg0, arg1, arg2, arg3, arg4, arg5);
 				ToLua.PushValue(L, arg0);
 				return 1;
 			}
@@ -673,7 +673,7 @@ public class UnityEngine_CameraWrap
 				float arg4 = (float)LuaDLL.luaL_checknumber(L, 5);
 				float arg5 = (float)LuaDLL.luaL_checknumber(L, 6);
 				UnityEngine.Camera.GateFitParameters arg6 = StackTraits<UnityEngine.Camera.GateFitParameters>.Check(L, 7);
-				UnityEngine.Camera.CalculateProjectionMatrixFromPhysicalProperties(out argref arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+				UnityEngine.Camera.CalculateProjectionMatrixFromPhysicalProperties(out arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 				ToLua.PushValue(L, arg0);
 				return 1;
 			}
@@ -1178,7 +1178,7 @@ public class UnityEngine_CameraWrap
 			{
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.CheckObject(L, 1, typeof(UnityEngine.Camera));
 				UnityEngine.Rendering.ScriptableCullingParameters arg0;
-				bool o = obj.TryGetCullingParameters(out argref arg0);
+				bool o = obj.TryGetCullingParameters(out arg0);
 				LuaDLL.lua_pushboolean(L, o);
 				ToLua.PushValue(L, arg0);
 				return 2;
@@ -1188,7 +1188,7 @@ public class UnityEngine_CameraWrap
 				UnityEngine.Camera obj = (UnityEngine.Camera)ToLua.CheckObject(L, 1, typeof(UnityEngine.Camera));
 				bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 				UnityEngine.Rendering.ScriptableCullingParameters arg1;
-				bool o = obj.TryGetCullingParameters(arg0, out argref arg1);
+				bool o = obj.TryGetCullingParameters(arg0, out arg1);
 				LuaDLL.lua_pushboolean(L, o);
 				ToLua.PushValue(L, arg1);
 				return 2;

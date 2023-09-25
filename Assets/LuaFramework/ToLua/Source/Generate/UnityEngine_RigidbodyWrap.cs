@@ -660,7 +660,7 @@ public class UnityEngine_RigidbodyWrap
 				UnityEngine.Rigidbody obj = (UnityEngine.Rigidbody)ToLua.CheckObject<UnityEngine.Rigidbody>(L, 1);
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 				UnityEngine.RaycastHit arg1;
-				bool o = obj.SweepTest(arg0, out argref arg1);
+				bool o = obj.SweepTest(arg0, out arg1);
 				LuaDLL.lua_pushboolean(L, o);
 				ToLua.Push(L, arg1);
 				return 2;
@@ -671,7 +671,7 @@ public class UnityEngine_RigidbodyWrap
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 				UnityEngine.RaycastHit arg1;
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 4);
-				bool o = obj.SweepTest(arg0, out argref arg1, arg2);
+				bool o = obj.SweepTest(arg0, out arg1, arg2);
 				LuaDLL.lua_pushboolean(L, o);
 				ToLua.Push(L, arg1);
 				return 2;
@@ -683,7 +683,7 @@ public class UnityEngine_RigidbodyWrap
 				UnityEngine.RaycastHit arg1;
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 4);
 				UnityEngine.QueryTriggerInteraction arg3 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 5, typeof(UnityEngine.QueryTriggerInteraction));
-				bool o = obj.SweepTest(arg0, out argref arg1, arg2, arg3);
+				bool o = obj.SweepTest(arg0, out arg1, arg2, arg3);
 				LuaDLL.lua_pushboolean(L, o);
 				ToLua.Push(L, arg1);
 				return 2;

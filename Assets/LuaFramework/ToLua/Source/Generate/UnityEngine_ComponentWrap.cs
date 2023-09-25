@@ -94,7 +94,7 @@ public class UnityEngine_ComponentWrap
 			UnityEngine.Component obj = (UnityEngine.Component)ToLua.CheckObject<UnityEngine.Component>(L, 1);
 			System.Type arg0 = ToLua.CheckMonoType(L, 2);
 			UnityEngine.Component arg1 = null;
-			bool o = obj.TryGetComponent(arg0, out argref arg1);
+			bool o = obj.TryGetComponent(arg0, out arg1);
 			LuaDLL.lua_pushboolean(L, o);
 			ToLua.Push(L, arg1);
 			return 2;

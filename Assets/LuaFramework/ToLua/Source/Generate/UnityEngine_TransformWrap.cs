@@ -17,17 +17,11 @@ public class UnityEngine_TransformWrap
 		L.RegFunction("RotateAround", RotateAround);
 		L.RegFunction("LookAt", LookAt);
 		L.RegFunction("TransformDirection", TransformDirection);
-		L.RegFunction("TransformDirections", TransformDirections);
 		L.RegFunction("InverseTransformDirection", InverseTransformDirection);
-		L.RegFunction("InverseTransformDirections", InverseTransformDirections);
 		L.RegFunction("TransformVector", TransformVector);
-		L.RegFunction("TransformVectors", TransformVectors);
 		L.RegFunction("InverseTransformVector", InverseTransformVector);
-		L.RegFunction("InverseTransformVectors", InverseTransformVectors);
 		L.RegFunction("TransformPoint", TransformPoint);
-		L.RegFunction("TransformPoints", TransformPoints);
 		L.RegFunction("InverseTransformPoint", InverseTransformPoint);
-		L.RegFunction("InverseTransformPoints", InverseTransformPoints);
 		L.RegFunction("DetachChildren", DetachChildren);
 		L.RegFunction("SetAsFirstSibling", SetAsFirstSibling);
 		L.RegFunction("SetAsLastSibling", SetAsLastSibling);
@@ -139,7 +133,7 @@ public class UnityEngine_TransformWrap
 			UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			UnityEngine.Vector3 arg0;
 			UnityEngine.Quaternion arg1;
-			obj.GetPositionAndRotation(out argref arg0, out argref arg1);
+			obj.GetPositionAndRotation(out arg0, out arg1);
 			ToLua.Push(L, arg0);
 			ToLua.Push(L, arg1);
 			return 2;
@@ -159,7 +153,7 @@ public class UnityEngine_TransformWrap
 			UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 			UnityEngine.Vector3 arg0;
 			UnityEngine.Quaternion arg1;
-			obj.GetLocalPositionAndRotation(out argref arg0, out argref arg1);
+			obj.GetLocalPositionAndRotation(out arg0, out arg1);
 			ToLua.Push(L, arg0);
 			ToLua.Push(L, arg1);
 			return 2;
@@ -413,39 +407,6 @@ public class UnityEngine_TransformWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int TransformDirections(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.TransformDirections(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.TransformDirections(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.TransformDirections");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int InverseTransformDirection(IntPtr L)
 	{
 		try
@@ -473,39 +434,6 @@ public class UnityEngine_TransformWrap
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformDirection");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InverseTransformDirections(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.InverseTransformDirections(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.InverseTransformDirections(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformDirections");
 			}
 		}
 		catch (Exception e)
@@ -551,39 +479,6 @@ public class UnityEngine_TransformWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int TransformVectors(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.TransformVectors(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.TransformVectors(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.TransformVectors");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int InverseTransformVector(IntPtr L)
 	{
 		try
@@ -611,39 +506,6 @@ public class UnityEngine_TransformWrap
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformVector");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InverseTransformVectors(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.InverseTransformVectors(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.InverseTransformVectors(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformVectors");
 			}
 		}
 		catch (Exception e)
@@ -689,39 +551,6 @@ public class UnityEngine_TransformWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int TransformPoints(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.TransformPoints(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.TransformPoints(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.TransformPoints");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int InverseTransformPoint(IntPtr L)
 	{
 		try
@@ -749,39 +578,6 @@ public class UnityEngine_TransformWrap
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformPoint");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InverseTransformPoints(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.Span<UnityEngine.Vector3> arg0 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 2);
-				obj.InverseTransformPoints(arg0);
-				return 0;
-			}
-			else if (count == 3)
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				System.ReadOnlySpan<UnityEngine.Vector3> arg0 = StackTraits<System.ReadOnlySpan<UnityEngine.Vector3>>.Check(L, 2);
-				System.Span<UnityEngine.Vector3> arg1 = StackTraits<System.Span<UnityEngine.Vector3>>.Check(L, 3);
-				obj.InverseTransformPoints(arg0, arg1);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Transform.InverseTransformPoints");
 			}
 		}
 		catch (Exception e)

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Copyright (c) 2008 Jonathan Wagner
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy

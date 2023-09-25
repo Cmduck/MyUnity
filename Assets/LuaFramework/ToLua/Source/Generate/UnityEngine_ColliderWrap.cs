@@ -81,7 +81,7 @@ public class UnityEngine_ColliderWrap
 			UnityEngine.Ray arg0 = ToLua.ToRay(L, 2);
 			UnityEngine.RaycastHit arg1;
 			float arg2 = (float)LuaDLL.luaL_checknumber(L, 4);
-			bool o = obj.Raycast(arg0, out argref arg1, arg2);
+			bool o = obj.Raycast(arg0, out arg1, arg2);
 			LuaDLL.lua_pushboolean(L, o);
 			if (o) ToLua.Push(L, arg1); else LuaDLL.lua_pushnil(L);
 			return 2;

@@ -1,4 +1,4 @@
-﻿/* 
+/* 
     LuaFramework Code By Jarjin lee
 */
 

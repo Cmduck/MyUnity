@@ -512,7 +512,7 @@ public class UnityEngine_AudioSourceWrap
 			UnityEngine.AudioSource obj = (UnityEngine.AudioSource)ToLua.CheckObject(L, 1, typeof(UnityEngine.AudioSource));
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			float arg1;
-			bool o = obj.GetSpatializerFloat(arg0, out argref arg1);
+			bool o = obj.GetSpatializerFloat(arg0, out arg1);
 			LuaDLL.lua_pushboolean(L, o);
 			LuaDLL.lua_pushnumber(L, arg1);
 			return 2;
@@ -532,7 +532,7 @@ public class UnityEngine_AudioSourceWrap
 			UnityEngine.AudioSource obj = (UnityEngine.AudioSource)ToLua.CheckObject(L, 1, typeof(UnityEngine.AudioSource));
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			float arg1;
-			bool o = obj.GetAmbisonicDecoderFloat(arg0, out argref arg1);
+			bool o = obj.GetAmbisonicDecoderFloat(arg0, out arg1);
 			LuaDLL.lua_pushboolean(L, o);
 			LuaDLL.lua_pushnumber(L, arg1);
 			return 2;

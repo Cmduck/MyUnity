@@ -1426,7 +1426,7 @@ public class UnityEngine_ShaderWrap
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			string arg1 = null;
 			int arg2;
-			bool o = obj.FindTextureStack(arg0, out argref arg1, out argref arg2);
+			bool o = obj.FindTextureStack(arg0, out arg1, out arg2);
 			LuaDLL.lua_pushboolean(L, o);
 			LuaDLL.lua_pushstring(L, arg1);
 			LuaDLL.lua_pushinteger(L, arg2);
