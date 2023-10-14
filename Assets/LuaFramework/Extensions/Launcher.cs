@@ -103,7 +103,7 @@ public class Launcher
 
     private void onFileSuccess(in string customId, in string storagePath)
     {
-        Debug.Log($"{customId} 解压完成 => " + storagePath);
+        Debug.Log($"{customId} 拷贝完成 => " + storagePath);
         ++_downloadedFiles;
 
         _luaProgress(_downloadedFiles, _totalFiles);
@@ -154,6 +154,7 @@ public class Launcher
 
             if (dataInner.succeed)
             {
+                Debug.Log($"{dataInner.customId} 解压完成 => " + dataInner.zipFile);
                 onFileSuccess(dataInner.customId, dataInner.zipFile);
             }
             else
@@ -243,6 +244,25 @@ public class Launcher
                 _unzipUnits.Add(pair.Key, unit);
                 Debug.Log($"[{module}] --> {pair.Key} downloadUrl:{downloadUrl} storagePath:{storagePath}");
             }
+
+            // cached manifest
+            string manifestFile = $"{module}_manifest.json";
+            var cachedUnit = new UnzipUnit();
+            cachedUnit.storagePath = $"{writablePath}/remote-{module}/{manifestFile}";
+            cachedUnit.customId = manifestFile;
+            cachedUnit.srcUrl = $"{Application.streamingAssetsPath}/{manifestFile}";
+            cachedUnit.type = 0;
+            Debug.Log("Extract manifest:" + manifestFile);
+            _unzipUnits.Add(manifestFile, cachedUnit);
+
+            // package manifest
+            var packageUnit = new UnzipUnit();
+            packageUnit.storagePath = $"{writablePath}/{manifestFile}";
+            packageUnit.customId = manifestFile;
+            packageUnit.srcUrl = $"{Application.streamingAssetsPath}/{manifestFile}";
+            packageUnit.type = 0;
+            Debug.Log("Extract @manifest:" + manifestFile);
+            _unzipUnits.Add("@" + manifestFile, packageUnit);
         }
         batchDownload();
     }

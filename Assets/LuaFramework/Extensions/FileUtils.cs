@@ -1,3 +1,4 @@
+using LuaFramework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ public class FileUtils
             return null;
         }
 
-        return File.ReadAllBytes(filename);
+        return File.ReadAllBytes(fullpath);
     }
 
     public string fullPathForFilename(in string filename)
@@ -354,9 +355,11 @@ public class FileUtils
         _writablePath = Application.persistentDataPath + "/";
 
 #if UNITY_EDITOR
+        string rootPath = AppConst.FrameworkRoot;
+        // Tolua代码
+        _searchPathArray.Add($"{Application.dataPath}/LuaFramework/ToLua/Lua/");
+        // 工程代码
         _searchPathArray.Add($"{Application.dataPath}/Resources/src/");
-        _searchPathArray.Add($"{Application.dataPath}/Resources/src/tolua/");
-        _searchPathArray.Add($"{Application.dataPath}/Resources/res/");
 #else
         // _searchPathArray.Add($"{Application.dataPath}/Resources/src");
         // _searchPathArray.Add($"{Application.dataPath}/Resources/res");

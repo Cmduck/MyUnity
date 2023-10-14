@@ -269,9 +269,12 @@ namespace Native
             _downloadedSize.Clear();
             _totalEnabled = false;
 
+            string localPackageUrl = _localManifest.getPackageUrl();
+
             // Temporary manifest exists, previously updating and equals to the remote version, resuming previous download
             if (_tempManifest != null && _tempManifest.isLoaded() && _tempManifest.isUpdating() && _tempManifest.versionEquals(_remoteManifest))
             {
+                _tempManifest.setPackageUrl(localPackageUrl);
                 _tempManifest.saveToFile(_tempManifestPath);
                 _tempManifest.genResumeAssetsList(_downloadUnits);
                 _totalWaitToDownload = _totalToDownload = _downloadUnits.Count;
@@ -294,6 +297,7 @@ namespace Native
                     // Remove all temp files
                     Directory.Delete(_tempStoragePath, true);
                     _tempManifest = null;
+                    _remoteManifest.setPackageUrl(localPackageUrl);
                     // Recreate temp storage path and save remote manifest
                     _remoteManifest.saveToFile(_tempManifestPath);
                 }
