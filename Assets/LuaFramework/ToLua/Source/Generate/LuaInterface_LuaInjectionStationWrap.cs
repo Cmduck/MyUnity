@@ -8,6 +8,7 @@ public class LuaInterface_LuaInjectionStationWrap
 	{
 		L.BeginClass(typeof(LuaInterface.LuaInjectionStation), typeof(System.Object));
 		L.RegFunction("CacheInjectFunction", CacheInjectFunction);
+		L.RegFunction("Clear", Clear);
 		L.RegFunction("New", _CreateLuaInterface_LuaInjectionStation);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegConstant("NOT_INJECTION_FLAG", 0);
@@ -49,6 +50,21 @@ public class LuaInterface_LuaInjectionStationWrap
 			byte arg1 = (byte)LuaDLL.luaL_checknumber(L, 2);
 			LuaFunction arg2 = ToLua.CheckLuaFunction(L, 3);
 			LuaInterface.LuaInjectionStation.CacheInjectFunction(arg0, arg1, arg2);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Clear(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			LuaInterface.LuaInjectionStation.Clear();
 			return 0;
 		}
 		catch (Exception e)

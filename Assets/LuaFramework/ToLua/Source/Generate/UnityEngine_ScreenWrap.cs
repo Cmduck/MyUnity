@@ -38,19 +38,19 @@ public class UnityEngine_ScreenWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 3 && TypeChecker.CheckTypes<UnityEngine.FullScreenMode>(L, 3))
-			{
-				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
-				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
-				UnityEngine.FullScreenMode arg2 = (UnityEngine.FullScreenMode)ToLua.ToObject(L, 3);
-				UnityEngine.Screen.SetResolution(arg0, arg1, arg2);
-				return 0;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes<bool>(L, 3))
+			if (count == 3 && TypeChecker.CheckTypes<bool>(L, 3))
 			{
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
 				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
 				bool arg2 = LuaDLL.lua_toboolean(L, 3);
+				UnityEngine.Screen.SetResolution(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.FullScreenMode>(L, 3))
+			{
+				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+				UnityEngine.FullScreenMode arg2 = (UnityEngine.FullScreenMode)ToLua.ToObject(L, 3);
 				UnityEngine.Screen.SetResolution(arg0, arg1, arg2);
 				return 0;
 			}
@@ -98,10 +98,9 @@ public class UnityEngine_ScreenWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.DisplayInfo arg0 = StackTraits<UnityEngine.DisplayInfo>.Check(L, 1);
 			UnityEngine.Vector2Int arg1 = StackTraits<UnityEngine.Vector2Int>.Check(L, 2);
-			UnityEngine.AsyncOperation o = UnityEngine.Screen.MoveMainWindowTo(in arg0, arg1);
+			UnityEngine.AsyncOperation o = UnityEngine.Screen.MoveMainWindowTo(arg0, arg1);
 			ToLua.PushObject(L, o);
-			ToLua.PushValue(L, arg0);
-			return 2;
+			return 1;
 		}
 		catch (Exception e)
 		{

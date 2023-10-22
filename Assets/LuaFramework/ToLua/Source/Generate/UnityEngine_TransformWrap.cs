@@ -248,19 +248,19 @@ public class UnityEngine_TransformWrap
 				obj.Rotate(arg0);
 				return 0;
 			}
-			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Space>(L, 3))
-			{
-				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
-				UnityEngine.Space arg1 = (UnityEngine.Space)ToLua.ToObject(L, 3);
-				obj.Rotate(arg0, arg1);
-				return 0;
-			}
 			else if (count == 3 && TypeChecker.CheckTypes<float>(L, 3))
 			{
 				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 				float arg1 = (float)LuaDLL.lua_tonumber(L, 3);
+				obj.Rotate(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Space>(L, 3))
+			{
+				UnityEngine.Transform obj = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
+				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
+				UnityEngine.Space arg1 = (UnityEngine.Space)ToLua.ToObject(L, 3);
 				obj.Rotate(arg0, arg1);
 				return 0;
 			}

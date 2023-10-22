@@ -50,16 +50,16 @@ public static class CustomSettings
     public static BindType[] customTypeList =
     {                
         //------------------------为例子导出--------------------------------
-        //_GT(typeof(TestEventListener)),
-        //_GT(typeof(TestProtol)),
-        //_GT(typeof(TestAccount)),
-        //_GT(typeof(Dictionary<int, TestAccount>)).SetLibName("AccountMap"),
-        //_GT(typeof(KeyValuePair<int, TestAccount>)),
-        //_GT(typeof(Dictionary<int, TestAccount>.KeyCollection)),
-        //_GT(typeof(Dictionary<int, TestAccount>.ValueCollection)),
-        //_GT(typeof(TestExport)),
-        //_GT(typeof(TestExport.Space)),
-        //-------------------------------------------------------------------        
+        // _GT(typeof(TestEventListener)),
+        // _GT(typeof(TestProtol)),
+        // _GT(typeof(TestAccount)),
+        // _GT(typeof(Dictionary<int, TestAccount>)).SetLibName("AccountMap"),
+        // _GT(typeof(KeyValuePair<int, TestAccount>)),
+        // _GT(typeof(Dictionary<int, TestAccount>.KeyCollection)),
+        // _GT(typeof(Dictionary<int, TestAccount>.ValueCollection)),
+        // _GT(typeof(TestExport)),
+        // _GT(typeof(TestExport.Space)),
+        // -------------------------------------------------------------------        
                         
         _GT(typeof(LuaInjectionStation)),
         _GT(typeof(InjectType)),
