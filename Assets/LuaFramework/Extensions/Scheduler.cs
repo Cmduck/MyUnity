@@ -4,29 +4,30 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Helper
+namespace Extension
 {
     public interface ISchedulable
     {
         public void Update();
     }
 
-    internal struct TimerItem
+    internal class TimerItem
     {
         // 定时标识
-        public object target;
-        public int timerID;
+        public object target = null;
+        public int timerID = -1;
         // 重复次数(-1 无限次)
-        public int repeat;
+        public int repeat = 0;
         // 间隔时间
-        public float interval;
+        public float interval = 0;
         // 剩余时间
-        public float leave;
+        public float leave = 0;
         // 延迟时间
-        public float delay;
+        public float delay = 0;
         // 是否暂停
-        public bool paused;
-
+        public bool paused = false;
+        // 是否停止
+        public bool stoped = true;
         public Action callback;
     }
 
@@ -44,8 +45,12 @@ namespace Helper
 
         private List<ISchedulable> _everyframe = new();
 
+        // 空闲
         private List<TimerItem> _idle = new List<TimerItem>();
+        // 活跃
         private List<TimerItem> _active = new List<TimerItem>();
+        // 所有
+        private List<TimerItem> _all = new List<TimerItem>();
 
         private IdGenerator _idGenerator = new IdGenerator();
 
@@ -124,6 +129,7 @@ namespace Helper
 
             if (_leaveTime >= dt) { 
                 _leaveTime -= dt;
+                Debug.Log("leaveTime:" +  _leaveTime);
             }
             else _leaveTime = 0;
 
@@ -162,6 +168,7 @@ namespace Helper
                                 Debug.Log($"Schedule() - Recycle timerID:{pTimerItem.timerID} interval:{pTimerItem.interval} repeat:{pTimerItem.repeat} leave:{pTimerItem.leave} delay:{pTimerItem.delay} timestamp: {Time.time}");
                                 _idGenerator.recycleId(pTimerItem.timerID);
                                 bKillTimer = true;
+                                pTimerItem.stoped = true;
                                 _active.RemoveAt(l);
                                 _idle.Add(pTimerItem);
                             }
@@ -182,16 +189,23 @@ namespace Helper
                     }
                 }
 
-                if (_active.Count == 0)
-                {
-                    Pause();
-                }
-
                 //设置响应
                 _elapseTime = 0;
                 _leaveTime = dwTimeLeave;
+
+                if (_active.Count == 0 || dwTimeLeave == float.MaxValue)
+                {
+                    _leaveTime = NO_TIME_LEAVE;
+                    Pause();
+                }
             }
         }
+
+        public int Schedule(Action callback, object target, float interval, bool paused)
+        {
+            return Schedule(callback, target, interval, -1, 0, paused);
+        }
+
         /// <summary>
         /// 开启定时器
         /// </summary>
@@ -200,8 +214,9 @@ namespace Helper
         /// <param name="interval">间隔时间</param>
         /// <param name="repeat">重复次数</param>
         /// <param name="delay">延迟时间</param>
+        /// <param name="paused">是否暂停</param>
         /// <returns>是否成功</returns>
-        public bool Schedule(Action callback, object target, float interval, int repeat, float delay = 0F)
+        public int Schedule(Action callback, object target, float interval, int repeat, float delay, bool paused)
         {
             Assert.IsTrue(interval >= 0);
 
@@ -212,7 +227,7 @@ namespace Helper
 
             int timerID = _idGenerator.generateId();
 
-            TimerItem item = CreateItem();
+            TimerItem item = CreateItem(timerID);
 
             item.timerID = timerID;
             item.target = target;
@@ -220,10 +235,13 @@ namespace Helper
             item.repeat = repeat;
             item.leave = interval + _elapseTime + delay;
             item.delay = delay;
+            item.paused = paused;
             item.callback = callback;
+            item.stoped = false;
 
             if (_leaveTime == NO_TIME_LEAVE) _leaveTime = interval;
             else _leaveTime = Math.Min(_leaveTime, interval);
+
 
             _active.Add(item);
 
@@ -231,10 +249,10 @@ namespace Helper
 
             Resume();
 
-            return true;
+            return timerID;
         }
 
-        private TimerItem CreateItem()
+        private TimerItem CreateItem(int nTimerID)
         {
             TimerItem item;
             if (_idle.Count > 0)
@@ -245,9 +263,19 @@ namespace Helper
             else
             {
                 item = new TimerItem();
+                _all.Add(item);
+
+                Debug.Log("Scheduler::CreateItem() - new id:" + nTimerID);
             }
 
             return item;
+        }
+
+        public bool ScheduleOnce(Action callback, object target, float delay = 0F)
+        {
+
+            Schedule(callback, target, 0, 1, delay, false);
+            return true;
         }
 
         public void ScheduleUpdate(ISchedulable target = null)
@@ -260,25 +288,21 @@ namespace Helper
             _everyframe.Remove(target);
         }
 
-        public bool ScheduleOnce(Action callback, object target, float interval, float delay = 0F)
+        public void Unschedule(int nTimerID)
         {
-            return Schedule(callback, target, interval, 1, delay);
-        }
+            if (nTimerID < 0) return;
 
-        public void Unschedule(int dwTimerID)
-        {
-            if (dwTimerID < 0) return;
-
-            for (var l = _active.Count - 1; l >= 0; --l)
+            for (var i = 0; i < _active.Count; ++i)
             {
-                var pTimerItem = _active[l];
-                if (pTimerItem.timerID != dwTimerID) continue;
+                var pTimerItem = _active[i];
+                if (pTimerItem.timerID == nTimerID)
+                {
+                    _idGenerator.recycleId(pTimerItem.timerID);
+                    _active.RemoveAt(i);
+                    _idle.Add(pTimerItem);
 
-                _idGenerator.recycleId(pTimerItem.timerID);
-
-                _active.RemoveAt(l);
-                _idle.Add(pTimerItem);
-                break;
+                    break;
+                }
             }
 
             if (_active.Count == 0)
@@ -320,33 +344,82 @@ namespace Helper
             _leaveTime = NO_TIME_LEAVE;
         }
 
-        public void PauseTarget(object target)
-        {
-            for (var l = _active.Count - 1; l >= 0; --l)
-            {
-                var pTimerItem = _active[l];
-                if (pTimerItem.target != target) continue;
-                //减去当轮过去时间
-                if (pTimerItem.leave > _elapseTime) pTimerItem.leave -= _elapseTime;
-                else pTimerItem.leave = 0;
+        // public void ResumeTarget(object target)
+        // {
+        //     Debug.Assert(target != null);
 
-                pTimerItem.paused = true;
+        //     Resume();
+
+        //     for (var i = 0; i < _active.Count; ++i)
+        //     {
+        //         var pTimerItem = _active[i];
+        //         if (pTimerItem.target != target) continue;
+        //         //减去当轮过去时间
+        //         if (pTimerItem.leave > _elapseTime) pTimerItem.leave -= _elapseTime;
+        //         else pTimerItem.leave = 0;
+
+        //         pTimerItem.paused = false;
+        //     }
+        // }
+
+        // public void PauseTarget(object target)
+        // {
+        //     Debug.Assert(target != null);
+        //     Resume();
+
+        //     for (var l = _active.Count - 1; l >= 0; --l)
+        //     {
+        //         var pTimerItem = _active[l];
+        //         if (pTimerItem.target != target) continue;
+        //         //减去当轮过去时间
+        //         if (pTimerItem.leave > _elapseTime) pTimerItem.leave -= _elapseTime;
+        //         else pTimerItem.leave = 0;
+
+        //         pTimerItem.paused = true;
+        //     }
+        // }
+
+        /// <summary>
+        /// 恢复计时
+        /// </summary>
+        /// <param name="nTimerID"></param>
+        public void ResumeTimer(int nTimerID)
+        {
+            var item = _all[nTimerID];
+            if (item.stoped)
+            {
+                Debug.LogWarning("Scheduler::ResumeTimer() - timer is stoped!");
+                return;
             }
+
+            if (!item.paused) return;
+
+            item.paused = false;
+            if (_leaveTime == NO_TIME_LEAVE) _leaveTime = item.interval;
+            else _leaveTime = Math.Min(_leaveTime, item.interval);
+            
+            Resume();
         }
 
-        public void PauseTimer(int dwTimerID)
+        /// <summary>
+        /// 暂停计时
+        /// </summary>
+        /// <param name="nTimerID"></param>
+        public void PauseTimer(int nTimerID)
         {
-            for (var l = _active.Count - 1; l >= 0; --l)
+            var item = _all[nTimerID];
+            if (item.stoped)
             {
-                var pTimerItem = _active[l];
-                if (pTimerItem.timerID != dwTimerID) continue;
-                //减去当轮过去时间
-                if (pTimerItem.leave > _elapseTime) pTimerItem.leave -= _elapseTime;
-                else pTimerItem.leave = 0;
-
-                pTimerItem.paused = true;
-                break;
+                Debug.LogWarning("Scheduler::PauseTimer() - timer is stoped!");
+                return;
             }
+            
+            if (item.paused) return;
+
+            //减去当轮过去时间
+            if (item.leave > _elapseTime) item.leave -= _elapseTime;
+            else item.leave = 0;
+            item.paused = true;
         }
 
         public void performFunctionInMainThread(Action function)
