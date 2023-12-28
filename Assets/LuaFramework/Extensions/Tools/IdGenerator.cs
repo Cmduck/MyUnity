@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Helper
+namespace Extension
 {
     public class IdGenerator
     {
-        private List<int> _idIdle = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        private List<int> _idIdle = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         private List<int> _idActive = new();
-        private int _burthen = 16;
+        private int _burthen = 15;
 
         public int burthen
         {

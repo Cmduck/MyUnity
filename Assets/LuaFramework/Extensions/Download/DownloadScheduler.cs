@@ -1,11 +1,11 @@
-﻿using Helper;
+﻿using LuaFramework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace Native
+namespace Extension
 {
     using TaskWrapper = KeyValuePair<DownloadTask, DownloadIO>;
 
@@ -30,6 +30,13 @@ namespace Native
 
         private DownloadExecutor _executor;
 
+        private bool _loop = false;
+
+        /// <summary>
+        /// 调度ID
+        /// </summary>
+        private int _schdulerId = -1;
+
         public DownloadScheduler(in DownloaderHints hints)
         {
             _executor = new DownloadExecutor();
@@ -37,12 +44,14 @@ namespace Native
 
             Debug.Log("Construct DownloadScheduler:" + GetHashCode());
 
-            Scheduler.Instance.Schedule(onSchedule, this, 0.1f, -1);
+            _schdulerId = Scheduler.Instance.Schedule(onSchedule, this, 0.1f, true);
         }
 
         ~DownloadScheduler()
         {
             Debug.Log("Destruct DownloadScheduler:" + GetHashCode());
+            _schdulerId = -1;
+            _executor.stop();
         }
 
         private void onSchedule()
@@ -57,7 +66,7 @@ namespace Native
                 if (coTask._bytesReceived > 0)
                 {
                     onProgress(task, coTask._bytesReceived, coTask._totalBytesReceived, coTask._totalBytesExpected);
-                    Debug.Log($"    progress -> bytesReceived:{coTask._bytesReceived}  {coTask._totalBytesReceived}/{coTask._totalBytesExpected}");
+                    Debug.Log($" [{task.requestURL}]  progress -> totalBytesReceived:{coTask._totalBytesReceived} totalBytesExpected:{coTask._totalBytesExpected}");
                     coTask._bytesReceived = 0;
                 }
             }
@@ -65,6 +74,11 @@ namespace Native
             List<TaskWrapper> finishedTasks;
             _executor.getFinishedTasks(out finishedTasks);
 
+            if (_executor.stoped()) 
+            {
+                _loop = false;
+                Scheduler.Instance.PauseTimer(_schdulerId);
+            }
 
             foreach(var finishedTask in finishedTasks)
             {
@@ -99,6 +113,12 @@ namespace Native
 
             _executor.addTask(task, coTask);
             _executor.run();
+
+            if (!_loop)
+            {
+                _loop = true;
+                Scheduler.Instance.ResumeTimer(_schdulerId);
+            }
 
             return coTask;
         }

@@ -1,34 +1,32 @@
-﻿using Helper;
-using System;
+﻿using LuaFramework;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Native
+namespace Extension
 {
 
     using TaskWrapper = KeyValuePair<DownloadTask, DownloadIO>;
 
-    public class DownloadExecutor : ISchedulable
+    public class DownloadExecutor
     {
         public DownloaderHints hints;
         private Queue<TaskWrapper> _requestQueue = new Queue<TaskWrapper>();
         private Queue<TaskWrapper> _finishedQueue = new Queue<TaskWrapper>();
         private HashSet<TaskWrapper> _processSet = new HashSet<TaskWrapper>();
 
+        private bool _running = false;
+
         public DownloadExecutor()
         {
             Debug.Log("Construct DownloadExecutor:" + GetHashCode());
-
-            Scheduler.Instance.ScheduleUpdate(this);
         }
 
         ~DownloadExecutor()
         {
             Debug.Log("Destruct DownloadExecutor:" + GetHashCode());
-            Scheduler.Instance.UnScheduleUpdate(this);
         }
 
         public void addTask(in DownloadTask task, DownloadIO coTask)
@@ -45,7 +43,11 @@ namespace Native
 
         public void run()
         {
-
+            if (!_running)
+            {
+                _running = true;
+                Scheduler.Instance.StartCoroutine(process());
+            }
         }
 
         public void stop()
@@ -55,7 +57,7 @@ namespace Native
 
         public bool stoped()
         {
-            return false;
+            return _running == false && _processSet.Count == 0 && _finishedQueue.Count == 0;
         }
 
         public ref readonly HashSet<TaskWrapper> getProcessTasks()
@@ -69,19 +71,22 @@ namespace Native
             _finishedQueue.Clear();
         }
 
-        public void Update()
+        private IEnumerator process()
         {
+            _running = true;
             uint countOfMaxProcessingTasks = hints.countOfMaxProcessingTasks;
+
             uint size = (uint)_processSet.Count;
-
-            //Debug.Log($"并发上限:{countOfMaxProcessingTasks} 当前并发:{size} 请求数:{_requestQueue.Count}");
-
-            if ((0 == countOfMaxProcessingTasks || size < countOfMaxProcessingTasks) && _requestQueue.Count > 0)
+            while ((0 == countOfMaxProcessingTasks || size < countOfMaxProcessingTasks) && _requestQueue.Count > 0)
             {
                 TaskWrapper wrapper = _requestQueue.Dequeue();
                 _processSet.Add(wrapper);
-                Scheduler.Instance.StartCoroutine(download(wrapper));
+
+                Debug.Log("Create a new request " + wrapper.Key.requestURL);
+                yield return download(wrapper);
             }
+
+            _running = false;
         }
 
         private IEnumerator getHeaderInfo(TaskWrapper wrapper)
@@ -91,8 +96,7 @@ namespace Native
 
             if (headRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"{wrapper.Key.requestURL} get header error:" + headRequest.error);
-
+                Debug.LogError($"When request url({wrapper.Key.requestURL}) header info, return unexcept http response code({headRequest.responseCode})");
                 wrapper.Value.setErrorProc(DownloadTask.ERROR_IMPL_INTERNAL, (int)headRequest.responseCode, headRequest.error);
             }
             else
@@ -158,7 +162,7 @@ namespace Native
                     wrapper.Value._totalBytesReceived = wrapper.Value._fileSize + wrapper.Value._bytesReceived;
 
                     Debug.Log($"{wrapper.Key.requestURL} downloading. _totalBytesReceived:{wrapper.Value._totalBytesReceived}");
-                    yield return null;
+                    yield return new WaitForSeconds(.1f);
                 }
 
                 if (uwr.result == UnityWebRequest.Result.Success)

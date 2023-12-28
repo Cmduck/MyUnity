@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Native
+namespace Extension
 {
 
     public interface IDownloadIO
@@ -176,33 +176,29 @@ namespace Native
                 }
 
                 // if file already exist, remove it
-                if (File.Exists(_fileName))
+                try
                 {
-                    try {
-
-                        if (_fileName != _tempFileName)
+                    if (_fileName != _tempFileName)
+                    {
+                        if (File.Exists(_fileName))
                         {
                             File.Delete(_fileName);
-                            File.Move(_tempFileName, _fileName);
                         }
 
-                        _sStoragePathSet.Remove(_tempFileName);
-                        break;
-                    } 
-                    catch (IOException ex)
-                    {
-                        Debug.LogError(ex.Message);
-                        _errCode = DownloadTask.ERROR_FILE_OP_FAILED;
-                        _errCodeInternal = 0;
-                        _errDescription = "Can't remove old file: " + _fileName;
-                        break;
+                        File.Move(_tempFileName, _fileName);
                     }
-                }
 
-                // failed
-                _errCode = DownloadTask.ERROR_FILE_OP_FAILED;
-                _errCodeInternal = 0;
-                _errDescription = $"Can't rename file from: {_tempFileName} to: {_fileName}";
+                    _sStoragePathSet.Remove(_tempFileName);
+                    break;
+                }
+                catch(IOException ex)
+                {
+                    Debug.LogError(ex.Message);
+                    _errCode = DownloadTask.ERROR_FILE_OP_FAILED;
+                    _errCodeInternal = 0;
+                    _errDescription = $"IO Error: from {_tempFileName} to {_fileName}.";
+                    break;
+                }
             } while (false);
         }
     }

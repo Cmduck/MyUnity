@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LuaInterface;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 using UnityEngine;
 
-namespace Native
+namespace Extension
 {
     public struct DownloadTask
     {
@@ -20,6 +21,7 @@ namespace Native
         public string storagePath;
         public Dictionary<string, string> header;
 
+        [NoToLua]
         public IDownloadIO _coTask;
     }
 
@@ -37,10 +39,14 @@ namespace Native
 
     public class Downloader
     {
+        [NoToLua]
         public delegate void OnDataTaskSuccess(in DownloadTask task, in MemoryStream data);
+        [NoToLua]
         public delegate void OnFileTaskSuccess(in DownloadTask task);
 
+        [NoToLua]
         public delegate void OnTaskProgress(in DownloadTask task, uint bytesReceived, uint totalBytesReceived, uint totalBytesExpected);
+        [NoToLua]
         public delegate void OnTaskError(in DownloadTask task, int errorCode, int errorCodeInternal, in string errorStr);
 
         public OnDataTaskSuccess onDataTaskSuccess;
