@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 
-namespace Native
+namespace Extension
 {
 
     using DownloadUnits = System.Collections.Generic.Dictionary<string, DownloadUnit>;

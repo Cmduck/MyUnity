@@ -1,11 +1,10 @@
-﻿using Helper;
-using System;
+﻿using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Native
+namespace Extension
 {
     using TaskCallBack = Action<IntPtr>;
     public class AsyncTaskPool

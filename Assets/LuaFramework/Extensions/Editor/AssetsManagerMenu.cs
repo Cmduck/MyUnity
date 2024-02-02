@@ -1,10 +1,9 @@
 ﻿using UnityEditor;
 using System.IO;
 using UnityEngine;
-using Native;
 using System.Collections.Generic;
-using static Native.Manifest;
-using Helper;
+using Extension;
+using static Extension.Manifest;
 
 public class AssetsManagerMenu
 {

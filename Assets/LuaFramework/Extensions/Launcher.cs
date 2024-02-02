@@ -1,6 +1,5 @@
-﻿using Helper;
+﻿using Extension;
 using LuaInterface;
-using Native;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
-using static Native.AsyncTaskPool;
+using static Extension.AsyncTaskPool;
 using UnzipUnits = System.Collections.Generic.Dictionary<string, Launcher.UnzipUnit>;
 
 
